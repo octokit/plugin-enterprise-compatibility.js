@@ -16,7 +16,7 @@ As a compromise, this plugin is reverting changes such as the one above to remai
 
 ```js
 const Octokit = require('@octokit/rest')
-  .plugin(require('@octokit/enterprise-compatibility'))
+  .plugin(require('@octokit/plugin-enterprise-compatibility'))
 const octokit = new Octokit()
 
 octokit.auth({
