@@ -3,6 +3,12 @@ const { test } = require('tap')
 
 const Octokit = require('@octokit/rest')
 
+test('does leave other endpoints in tact', t => {
+  const octokit = Octokit.plugin(require('.'))({ baseUrl: 'https://patched.test' })
+  t.ok(octokit.issues.get.endpoint)
+  t.end()
+})
+
 test('octokit.issues.addLabels() sends labels in request body', t => {
   const octokitOriginal = Octokit({ baseUrl: 'https://original.test' })
   const octokitPatched = Octokit.plugin(require('.'))({ baseUrl: 'https://patched.test' })
