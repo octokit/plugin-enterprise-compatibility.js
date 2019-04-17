@@ -23,7 +23,7 @@ test('octokit.issues.addLabels() sends labels in request body', t => {
   const options = {
     owner: 'octokit',
     repo: 'rest.js',
-    number: 1,
+    issue_number: 1,
     labels: ['foo', 'bar']
   }
 
@@ -47,7 +47,7 @@ test('octokit.issues.replaceLabels() sends labels in request body', t => {
   const options = {
     owner: 'octokit',
     repo: 'rest.js',
-    number: 1,
+    issue_number: 1,
     labels: ['foo', 'bar']
   }
 
