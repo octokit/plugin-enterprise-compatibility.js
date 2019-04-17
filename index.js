@@ -4,13 +4,18 @@ function octokitEnterpriseCompatibility (octokit) {
   // see https://github.com/octokit/rest.js/blob/15.x/lib/routes.json#L3046-L3068
   const addOrReplaceLabelsOptions = {
     params: {
+      issue_number: {
+        required: true,
+        type: 'integer'
+      },
       labels: {
         required: true,
         type: 'string[]',
         mapTo: 'data'
       },
       number: {
-        required: true,
+        alias: 'issue_number',
+        deprecated: true,
         type: 'integer'
       },
       owner: {
@@ -22,7 +27,7 @@ function octokitEnterpriseCompatibility (octokit) {
         type: 'string'
       }
     },
-    url: '/repos/:owner/:repo/issues/:number/labels'
+    url: '/repos/:owner/:repo/issues/:issue_number/labels'
   }
 
   octokit.registerEndpoints({
