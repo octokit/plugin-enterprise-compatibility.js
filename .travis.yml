@@ -13,6 +13,7 @@ jobs:
     - stage: test
       node_js: 8
     - node_js: 10
+    - node_js: 12
     - node_js: lts/*
       env: coverage upload
       after_script: npm run coverage:upload
@@ -21,7 +22,6 @@ jobs:
       env: semantic-release
       node_js: lts/*
       script: npx semantic-release
-
 
 stages:
   - test
