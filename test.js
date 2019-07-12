@@ -14,10 +14,10 @@ test('octokit.issues.addLabels() sends labels in request body', t => {
   const octokitPatched = Octokit.plugin(require('.'))({ baseUrl: 'https://patched.test' })
 
   nock('https://original.test')
-    .post('/repos/octokit/rest.js/issues/1/labels', { labels: [ 'foo', 'bar' ] })
+    .post('/repos/octokit/rest.js/issues/1/labels', { labels: ['foo', 'bar'] })
     .reply(200, {})
   nock('https://patched.test')
-    .post('/repos/octokit/rest.js/issues/1/labels', [ 'foo', 'bar' ])
+    .post('/repos/octokit/rest.js/issues/1/labels', ['foo', 'bar'])
     .reply(200, {})
 
   const options = {
@@ -38,10 +38,10 @@ test('octokit.issues.replaceLabels() sends labels in request body', t => {
   const octokitPatched = Octokit.plugin(require('.'))({ baseUrl: 'https://patched.test' })
 
   nock('https://original.test')
-    .put('/repos/octokit/rest.js/issues/1/labels', { labels: [ 'foo', 'bar' ] })
+    .put('/repos/octokit/rest.js/issues/1/labels', { labels: ['foo', 'bar'] })
     .reply(200, {})
   nock('https://patched.test')
-    .put('/repos/octokit/rest.js/issues/1/labels', [ 'foo', 'bar' ])
+    .put('/repos/octokit/rest.js/issues/1/labels', ['foo', 'bar'])
     .reply(200, {})
 
   const options = {
