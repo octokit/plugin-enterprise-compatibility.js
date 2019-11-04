@@ -6,6 +6,7 @@
   },
   "description": "Octokit plugin for improving GHE compatibility",
   "scripts": {
+    "build": "pika build",
     "generate-routes": "node scripts/generate-routes",
     "lint": "prettier --check index.js 'test/*' README.md package.json",
     "lint:fix": "prettier --write index.js 'test/*' README.md package.json",
@@ -25,6 +26,10 @@
   "license": "MIT",
   "devDependencies": {
     "@octokit/rest": "^16.24.2",
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-build-node": "^0.6.1",
+    "@pika/plugin-build-web": "^0.6.1",
+    "@pika/plugin-ts-standard-pkg": "^0.6.1",
     "@types/fetch-mock": "^7.3.1",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.5",
@@ -46,5 +51,41 @@
         "lines": 100
       }
     }
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-ts-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ]
+    ]
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      [
+        "@semantic-release/npm",
+        {
+          "pkgRoot": "./pkg"
+        }
+      ],
+      [
+        "semantic-release-plugin-update-version-in-files",
+        {
+          "files": [
+            "pkg/dist-web/*",
+            "pkg/dist-node/*",
+            "pkg/*/version.*"
+          ]
+        }
+      ]
+    ]
   }
 }
