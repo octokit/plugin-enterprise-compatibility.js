@@ -14,15 +14,43 @@ As a compromise, this plugin is reverting changes such as the one above to remai
 
 ## Usage
 
-```js
-const Octokit = require("@octokit/rest").plugin(
-  require("@octokit/plugin-enterprise-compatibility")
-);
-const octokit = new Octokit();
+<table>
+<tbody valign=top align=left>
+<tr><th>
+Browsers
+</th><td width=100%>
 
-octokit.auth({
-  type: "token",
-  token: GITHUB_TOKEN
+Load `@octokit/plugin-enterprise-compatibility` and [`@octokit/core`](https://github.com/octokit/core.js) (or core-compatible module) directly from [cdn.pika.dev](https://cdn.pika.dev)
+
+```html
+<script type="module">
+  import { Octokit } from "https://cdn.pika.dev/@octokit/core";
+  import { enterpriseCompatibility } from "https://cdn.pika.dev/@octokit/plugin-enterprise-compatibility";
+</script>
+```
+
+</td></tr>
+<tr><th>
+Node
+</th><td>
+
+Install with `npm install @octokit/core @octokit/plugin-enterprise-compatibility`. Optionally replace `@octokit/core` with a core-compatible module
+
+```js
+const { Octokit } = require("@octokit/core");
+const {
+  enterpriseCompatibility
+} = require("@octokit/plugin-enterprise-compatibility");
+```
+
+</td></tr>
+</tbody>
+</table>
+
+```js
+const MyOctokit = Octokit.plugin(enterpriseCompatibility);
+const octokit = new MyOctokit({
+  auth: "token123"
 });
 
 octokit.issues.addLabels({ owner, repo, number, labels: ["foo", "bar"] });
