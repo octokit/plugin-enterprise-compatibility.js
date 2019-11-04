@@ -2,6 +2,7 @@
 
 > Octokit plugin for improving GHE compatibility
 
+[![@latest](https://img.shields.io/npm/v/@octokit/plugin-enterprise-compatibility.svg)](https://www.npmjs.com/package/@octokit/plugin-enterprise-compatibility)
 [![Build Status](https://travis-ci.com/octokit/plugin-enterprise-compatibility.js.svg?branch=master)](https://travis-ci.com/octokit/plugin-enterprise-compatibility.js)
 [![Greenkeeper badge](https://badges.greenkeeper.io/octokit/plugin-enterprise-compatibility.js.svg)](https://greenkeeper.io/)
 
