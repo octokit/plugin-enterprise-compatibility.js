@@ -37,10 +37,11 @@
   "homepage": "https://github.com/octokit/plugin-enterprise-compatibility.js#readme",
   "devDependencies": {
     "@octokit/rest": "^16.24.2",
+    "@types/fetch-mock": "^7.3.1",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.5",
+    "fetch-mock": "^7.5.1",
     "jest": "^24.9.0",
-    "nock": "^11.3.3",
     "prettier": "^1.18.2",
     "semantic-release": "^15.13.12",
     "ts-jest": "^24.1.0",
