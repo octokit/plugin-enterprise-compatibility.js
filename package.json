@@ -25,6 +25,7 @@
   "author": "Gregor Martynus (https://github.com/gr2m)",
   "license": "MIT",
   "devDependencies": {
+    "@octokit/core": "^2.1.0",
     "@octokit/rest": "^16.24.2",
     "@pika/pack": "^0.5.0",
     "@pika/plugin-build-node": "^0.6.1",
