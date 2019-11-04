@@ -1,4 +1,4 @@
-const nock = require("nock");
+import fetchMock from "fetch-mock";
 
 const Octokit = require("@octokit/rest");
 
@@ -11,19 +11,39 @@ describe("side effects", () => {
 
 describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
   it("octokit.issues.addLabels() sends labels in request body", () => {
-    const octokitOriginal = Octokit({ baseUrl: "https://original.test" });
-    const octokitPatched = Octokit.plugin(require(".."))({
-      baseUrl: "https://patched.test"
-    });
+    const mock = fetchMock
+      .sandbox()
+      .post(
+        "https://original.test/repos/octokit/rest.js/issues/1/labels",
+        {},
+        {
+          // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
+          body: {
+            labels: ["foo", "bar"]
+          }
+        }
+      )
+      .post(
+        "https://patched.test/repos/octokit/rest.js/issues/1/labels",
+        {},
+        {
+          // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
+          body: ["foo", "bar"]
+        }
+      );
 
-    nock("https://original.test")
-      .post("/repos/octokit/rest.js/issues/1/labels", {
-        labels: ["foo", "bar"]
-      })
-      .reply(200, {});
-    nock("https://patched.test")
-      .post("/repos/octokit/rest.js/issues/1/labels", ["foo", "bar"])
-      .reply(200, {});
+    const octokitOriginal = Octokit({
+      baseUrl: "https://original.test",
+      request: {
+        fetch: mock
+      }
+    });
+    const octokitPatched = Octokit.plugin(require(".."))({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
 
     const options = {
       owner: "octokit",
@@ -39,17 +59,39 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
   });
 
   it("octokit.issues.replaceLabels() sends labels in request body", () => {
-    const octokitOriginal = Octokit({ baseUrl: "https://original.test" });
-    const octokitPatched = Octokit.plugin(require(".."))({
-      baseUrl: "https://patched.test"
-    });
+    const mock = fetchMock
+      .sandbox()
+      .put(
+        "https://original.test/repos/octokit/rest.js/issues/1/labels",
+        {},
+        {
+          // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
+          body: {
+            labels: ["foo", "bar"]
+          }
+        }
+      )
+      .put(
+        "https://patched.test/repos/octokit/rest.js/issues/1/labels",
+        {},
+        {
+          // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
+          body: ["foo", "bar"]
+        }
+      );
 
-    nock("https://original.test")
-      .put("/repos/octokit/rest.js/issues/1/labels", { labels: ["foo", "bar"] })
-      .reply(200, {});
-    nock("https://patched.test")
-      .put("/repos/octokit/rest.js/issues/1/labels", ["foo", "bar"])
-      .reply(200, {});
+    const octokitOriginal = Octokit({
+      baseUrl: "https://original.test",
+      request: {
+        fetch: mock
+      }
+    });
+    const octokitPatched = Octokit.plugin(require(".."))({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
 
     const options = {
       owner: "octokit",
