@@ -53,8 +53,13 @@ const octokit = new MyOctokit({
   auth: "token123"
 });
 
-octokit.issues.addLabels({ owner, repo, number, labels: ["foo", "bar"] });
-// sends ["foo", "bar"] instead of {"labels":["foo", "bar"]}
+octokit.request("POST /repos/:owner/:repo/issues/:issue_number/labels", {
+  owner,
+  repo,
+  number,
+  labels: ["foo", "bar"]
+});
+// sends ["foo", "bar"] instead of {"labels":["foo", "bar"]} as request body
 ```
 
 ## LICENSE
