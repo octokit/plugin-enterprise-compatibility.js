@@ -13,7 +13,9 @@
     "coverage": "tap --coverage-report=html",
     "coverage:upload": "npm run test && tap --coverage-report=text-lcov | coveralls",
     "generate-routes": "node scripts/generate-routes",
-    "pretest": "standard && standard-markdown *.md",
+    "lint": "prettier --check index.js 'test/*' README.md package.json",
+    "lint:fix": "prettier --write index.js 'test/*' README.md package.json",
+    "pretest": "npm run -s lint",
     "test": "tap --coverage test.js"
   },
   "repository": {
@@ -38,9 +40,8 @@
     "@octokit/rest": "^16.24.2",
     "coveralls": "^3.0.2",
     "nock": "^11.3.3",
+    "prettier": "^1.18.2",
     "semantic-release": "^15.13.12",
-    "standard": "^14.0.2",
-    "standard-markdown": "^5.0.1",
     "tap": "^14.0.0"
   },
   "dependencies": {}
