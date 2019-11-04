@@ -1,6 +1,6 @@
-module.exports = octokitEnterpriseCompatibility;
+import { VERSION } from "./version";
 
-function octokitEnterpriseCompatibility(octokit) {
+export function enterpriseCompatibility(octokit: any) {
   // see https://github.com/octokit/rest.js/blob/15.x/lib/routes.json#L3046-L3068
   const addOrReplaceLabelsOptions = {
     params: {
@@ -37,3 +37,5 @@ function octokitEnterpriseCompatibility(octokit) {
     }
   });
 }
+
+enterpriseCompatibility.VERSION = VERSION;

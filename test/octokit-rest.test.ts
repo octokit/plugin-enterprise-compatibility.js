@@ -2,9 +2,11 @@ import fetchMock from "fetch-mock";
 
 const Octokit = require("@octokit/rest");
 
+import { enterpriseCompatibility } from "../src";
+
 describe("side effects", () => {
   it("does leave other endpoints in tact", () => {
-    const octokit = Octokit.plugin(require(".."))();
+    const octokit = Octokit.plugin(enterpriseCompatibility)();
     expect(octokit.issues.get.endpoint).toBeTruthy();
   });
 });
@@ -38,7 +40,7 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
         fetch: mock
       }
     });
-    const octokitPatched = Octokit.plugin(require(".."))({
+    const octokitPatched = Octokit.plugin(enterpriseCompatibility)({
       baseUrl: "https://patched.test",
       request: {
         fetch: mock
@@ -86,7 +88,7 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
         fetch: mock
       }
     });
-    const octokitPatched = Octokit.plugin(require(".."))({
+    const octokitPatched = Octokit.plugin(enterpriseCompatibility)({
       baseUrl: "https://patched.test",
       request: {
         fetch: mock
