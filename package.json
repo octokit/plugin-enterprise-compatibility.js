@@ -15,7 +15,7 @@
     "lint": "prettier --check index.js 'test/*' README.md package.json",
     "lint:fix": "prettier --write index.js 'test/*' README.md package.json",
     "pretest": "npm run -s lint",
-    "test": "tap --coverage test/*.js"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -37,10 +37,25 @@
   "homepage": "https://github.com/octokit/plugin-enterprise-compatibility.js#readme",
   "devDependencies": {
     "@octokit/rest": "^16.24.2",
+    "@types/jest": "^24.0.21",
+    "@types/node": "^12.12.5",
+    "jest": "^24.9.0",
     "nock": "^11.3.3",
     "prettier": "^1.18.2",
     "semantic-release": "^15.13.12",
-    "tap": "^14.0.0"
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "jest": {
+    "preset": "ts-jest",
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
+  }
 }
