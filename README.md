@@ -15,16 +15,17 @@ As a compromise, this plugin is reverting changes such as the one above to remai
 ## Usage
 
 ```js
-const Octokit = require('@octokit/rest')
-  .plugin(require('@octokit/plugin-enterprise-compatibility'))
-const octokit = new Octokit()
+const Octokit = require("@octokit/rest").plugin(
+  require("@octokit/plugin-enterprise-compatibility")
+);
+const octokit = new Octokit();
 
 octokit.auth({
-  type: 'token',
+  type: "token",
   token: GITHUB_TOKEN
-})
+});
 
-octokit.issues.addLabels({ owner, repo, number, labels: ['foo', 'bar'] })
+octokit.issues.addLabels({ owner, repo, number, labels: ["foo", "bar"] });
 // sends ["foo", "bar"] instead of {"labels":["foo", "bar"]}
 ```
 

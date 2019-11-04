@@ -1,39 +1,39 @@
-module.exports = octokitEnterpriseCompatibility
+module.exports = octokitEnterpriseCompatibility;
 
-function octokitEnterpriseCompatibility (octokit) {
+function octokitEnterpriseCompatibility(octokit) {
   // see https://github.com/octokit/rest.js/blob/15.x/lib/routes.json#L3046-L3068
   const addOrReplaceLabelsOptions = {
     params: {
       issue_number: {
         required: true,
-        type: 'integer'
+        type: "integer"
       },
       labels: {
         required: true,
-        type: 'string[]',
-        mapTo: 'data'
+        type: "string[]",
+        mapTo: "data"
       },
       number: {
-        alias: 'issue_number',
+        alias: "issue_number",
         deprecated: true,
-        type: 'integer'
+        type: "integer"
       },
       owner: {
         required: true,
-        type: 'string'
+        type: "string"
       },
       repo: {
         required: true,
-        type: 'string'
+        type: "string"
       }
     },
-    url: '/repos/:owner/:repo/issues/:issue_number/labels'
-  }
+    url: "/repos/:owner/:repo/issues/:issue_number/labels"
+  };
 
   octokit.registerEndpoints({
     issues: {
-      addLabels: Object.assign({ method: 'POST' }, addOrReplaceLabelsOptions),
-      replaceLabels: Object.assign({ method: 'PUT' }, addOrReplaceLabelsOptions)
+      addLabels: Object.assign({ method: "POST" }, addOrReplaceLabelsOptions),
+      replaceLabels: Object.assign({ method: "PUT" }, addOrReplaceLabelsOptions)
     }
-  })
+  });
 }

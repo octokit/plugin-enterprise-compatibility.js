@@ -13,8 +13,8 @@
     "coverage": "tap --coverage-report=html",
     "coverage:upload": "npm run test && tap --coverage-report=text-lcov | coveralls",
     "generate-routes": "node scripts/generate-routes",
-    "lint": "prettier --check index.js 'test/*' README.md package.json",
-    "lint:fix": "prettier --write index.js 'test/*' README.md package.json",
+    "lint": "prettier --check index.js test.js README.md package.json",
+    "lint:fix": "prettier --write index.js test.js README.md package.json",
     "pretest": "npm run -s lint",
     "test": "tap --coverage test.js"
   },
