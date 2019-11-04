@@ -24,6 +24,9 @@
   ],
   "author": "Gregor Martynus (https://github.com/gr2m)",
   "license": "MIT",
+  "dependencies": {
+    "@octokit/types": "^2.0.1"
+  },
   "devDependencies": {
     "@octokit/core": "^2.1.0",
     "@octokit/rest": "^16.24.2",
@@ -41,7 +44,6 @@
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.4"
   },
-  "dependencies": {},
   "jest": {
     "preset": "ts-jest",
     "coverageThreshold": {
