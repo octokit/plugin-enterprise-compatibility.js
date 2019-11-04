@@ -11,7 +11,6 @@
   },
   "scripts": {
     "coverage": "tap --coverage-report=html",
-    "coverage:upload": "npm run test && tap --coverage-report=text-lcov | coveralls",
     "generate-routes": "node scripts/generate-routes",
     "lint": "prettier --check index.js 'test/*' README.md package.json",
     "lint:fix": "prettier --write index.js 'test/*' README.md package.json",
@@ -38,7 +37,6 @@
   "homepage": "https://github.com/octokit/plugin-enterprise-compatibility.js#readme",
   "devDependencies": {
     "@octokit/rest": "^16.24.2",
-    "coveralls": "^3.0.2",
     "nock": "^11.3.3",
     "prettier": "^1.18.2",
     "semantic-release": "^15.13.12",
