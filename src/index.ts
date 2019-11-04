@@ -1,39 +1,24 @@
+// Import for types only, not a production dependency
+import { Octokit } from "@octokit/core";
+
 import { VERSION } from "./version";
 
-export function enterpriseCompatibility(octokit: any) {
+export function enterpriseCompatibility(octokit: Octokit) {
   // see https://github.com/octokit/rest.js/blob/15.x/lib/routes.json#L3046-L3068
-  const addOrReplaceLabelsOptions = {
-    params: {
-      issue_number: {
-        required: true,
-        type: "integer"
-      },
-      labels: {
-        required: true,
-        type: "string[]",
-        mapTo: "data"
-      },
-      number: {
-        alias: "issue_number",
-        deprecated: true,
-        type: "integer"
-      },
-      owner: {
-        required: true,
-        type: "string"
-      },
-      repo: {
-        required: true,
-        type: "string"
-      }
-    },
-    url: "/repos/:owner/:repo/issues/:issue_number/labels"
-  };
+  octokit.hook.before("request", options => {
+    if (!["POST", "PUT"].includes(options.method)) {
+      return;
+    }
+    if (!/\/repos\/[^/]+\/[^/]+\/issues\/[^/]+\/labels/.test(options.url)) {
+      return;
+    }
 
-  octokit.registerEndpoints({
-    issues: {
-      addLabels: Object.assign({ method: "POST" }, addOrReplaceLabelsOptions),
-      replaceLabels: Object.assign({ method: "PUT" }, addOrReplaceLabelsOptions)
+    options.data = options.labels;
+    delete options.labels;
+
+    // for @octokit/rest v16.x, remove validation of labels option
+    if (options.request.validate) {
+      delete options.request.validate.labels;
     }
   });
 }
