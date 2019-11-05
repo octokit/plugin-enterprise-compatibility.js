@@ -161,3 +161,193 @@ describe("POST /repos/:owner/:repo/labels", () => {
     });
   });
 });
+
+describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
+  it('"GET /repos/:owner/:repo/git/ref/:ref" with single object response"', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        { ok: true }
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    const { data } = await octokitPatched.request(
+      "GET /repos/:owner/:repo/git/ref/:ref",
+      {
+        owner: "octocat",
+        repo: "hello-world",
+        ref: "feature/123"
+      }
+    );
+    expect(data).toStrictEqual({ ok: true });
+  });
+
+  it('"GET /repos/:owner/:repo/git/ref/:ref" with array response', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        [1, 2]
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    try {
+      await octokitPatched.request("GET /repos/:owner/:repo/git/ref/:ref", {
+        owner: "octocat",
+        repo: "hello-world",
+        ref: "feature/123"
+      });
+      throw new Error("Request should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(404);
+    }
+  });
+
+  it('"GET /repos/:owner/:repo/git/ref/:ref" with 404 response', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        404
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    try {
+      await octokitPatched.request("GET /repos/:owner/:repo/git/ref/:ref", {
+        owner: "octocat",
+        repo: "hello-world",
+        ref: "feature/123"
+      });
+      throw new Error("Request should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(404);
+    }
+  });
+
+  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with single object response"', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        { ok: true }
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    const { data } = await octokitPatched.request(
+      "GET /repos/:owner/:repo/git/matching-refs/:ref",
+      {
+        owner: "octocat",
+        repo: "hello-world",
+        ref: "feature/123"
+      }
+    );
+    expect(data).toStrictEqual([{ ok: true }]);
+  });
+
+  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with array response"', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        [1, 2]
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    const { data } = await octokitPatched.request(
+      "GET /repos/:owner/:repo/git/matching-refs/:ref",
+      {
+        owner: "octocat",
+        repo: "hello-world",
+        ref: "feature/123"
+      }
+    );
+    expect(data).toStrictEqual([1, 2]);
+  });
+
+  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with 404 response"', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        404
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    const { data } = await octokitPatched.request(
+      "GET /repos/:owner/:repo/git/matching-refs/:ref",
+      {
+        owner: "octocat",
+        repo: "hello-world",
+        ref: "feature/123"
+      }
+    );
+    expect(data).toStrictEqual([]);
+  });
+
+  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with 500 response"', async () => {
+    const mock = fetchMock
+      .sandbox()
+      .get(
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        500
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://patched.test",
+      request: {
+        fetch: mock
+      }
+    });
+
+    try {
+      await octokitPatched.request(
+        "GET /repos/:owner/:repo/git/matching-refs/:ref",
+        {
+          owner: "octocat",
+          repo: "hello-world",
+          ref: "feature/123"
+        }
+      );
+      throw new Error("Request should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(500);
+    }
+  });
+});
