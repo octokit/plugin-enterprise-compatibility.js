@@ -111,10 +111,12 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
 });
 
 describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
-  it("has no effect on GET methods", () => {
+  it("has no effect on GET methods", async () => {
     const mock = fetchMock
       .sandbox()
-      .get("https://patched.test/repos/octokit/rest.js/issues/1/labels", 200);
+      .get("https://patched.test/repos/octokit/rest.js/issues/1/labels", {
+        ok: true
+      });
 
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
@@ -123,7 +125,7 @@ describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
       }
     });
 
-    return octokitPatched.request(
+    const { data } = await octokitPatched.request(
       "GET /repos/:owner/:repo/issues/:issue_number/labels",
       {
         owner: "octokit",
@@ -131,6 +133,7 @@ describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
         issue_number: 1
       }
     );
+    expect(data).toStrictEqual({ ok: true });
   });
 });
 

@@ -69,6 +69,8 @@ export function enterpriseCompatibility(octokit: Octokit) {
             throw error;
           });
       }
+
+      return request(options);
     }
   );
 }
