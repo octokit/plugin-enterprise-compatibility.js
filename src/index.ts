@@ -20,6 +20,7 @@ export function enterpriseCompatibility(octokit: Octokit) {
         delete options.labels;
 
         // for @octokit/rest v16.x, remove validation of labels option
+        /* istanbul ignore if */
         if (options.request.validate) {
           delete options.request.validate.labels;
         }
