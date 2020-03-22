@@ -24,8 +24,8 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
           body: {
-            labels: ["foo", "bar"]
-          }
+            labels: ["foo", "bar"],
+          },
         }
       )
       .post(
@@ -33,33 +33,33 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
         {},
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
-          body: ["foo", "bar"]
+          body: ["foo", "bar"],
         }
       );
 
     const octokitOriginal = new Octokit({
       baseUrl: "https://original.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
     const octokitPatched = new MyOctokit({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const options = {
       owner: "octokit",
       repo: "rest.js",
       issue_number: 1,
-      labels: ["foo", "bar"]
+      labels: ["foo", "bar"],
     };
 
     return Promise.all([
       octokitOriginal.issues.addLabels(options),
-      octokitPatched.issues.addLabels(options)
+      octokitPatched.issues.addLabels(options),
     ]);
   });
 
@@ -72,8 +72,8 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
           body: {
-            labels: ["foo", "bar"]
-          }
+            labels: ["foo", "bar"],
+          },
         }
       )
       .put(
@@ -81,33 +81,33 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceLabels()", () => {
         {},
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
-          body: ["foo", "bar"]
+          body: ["foo", "bar"],
         }
       );
 
     const octokitOriginal = new Octokit({
       baseUrl: "https://original.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
     const octokitPatched = new MyOctokit({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const options = {
       owner: "octokit",
       repo: "rest.js",
       issue_number: 1,
-      labels: ["foo", "bar"]
+      labels: ["foo", "bar"],
     };
 
     return Promise.all([
       octokitOriginal.issues.replaceLabels(options),
-      octokitPatched.issues.replaceLabels(options)
+      octokitPatched.issues.replaceLabels(options),
     ]);
   });
 });

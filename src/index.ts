@@ -7,7 +7,7 @@ import { VERSION } from "./version";
 import { isIssueLabelsUpdateOrReplace } from "./is-issue-labels-update-or-replace";
 import {
   isGetReference,
-  isListReferences
+  isListReferences,
 } from "./is-get-reference-or-list-references";
 
 export function enterpriseCompatibility(octokit: Octokit) {
@@ -42,7 +42,7 @@ export function enterpriseCompatibility(octokit: Octokit) {
                   `More than one reference found at "${options.url}"`,
                   404,
                   {
-                    request: options
+                    request: options,
                   }
                 );
               }
@@ -63,7 +63,7 @@ export function enterpriseCompatibility(octokit: Octokit) {
               return {
                 status: 200,
                 headers: error.headers,
-                data: []
+                data: [],
               };
             }
 

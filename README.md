@@ -39,7 +39,7 @@ Install with `npm install @octokit/core @octokit/plugin-enterprise-compatibility
 ```js
 const { Octokit } = require("@octokit/core");
 const {
-  enterpriseCompatibility
+  enterpriseCompatibility,
 } = require("@octokit/plugin-enterprise-compatibility");
 ```
 
@@ -50,14 +50,14 @@ const {
 ```js
 const MyOctokit = Octokit.plugin(enterpriseCompatibility);
 const octokit = new MyOctokit({
-  auth: "token123"
+  auth: "token123",
 });
 
 octokit.request("POST /repos/:owner/:repo/issues/:issue_number/labels", {
   owner,
   repo,
   number,
-  labels: ["foo", "bar"]
+  labels: ["foo", "bar"],
 });
 // sends ["foo", "bar"] instead of {"labels":["foo", "bar"]} as request body
 ```

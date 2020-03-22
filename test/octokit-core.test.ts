@@ -14,8 +14,8 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
           body: {
-            labels: ["foo", "bar"]
-          }
+            labels: ["foo", "bar"],
+          },
         }
       )
       .post(
@@ -23,21 +23,21 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
         {},
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
-          body: ["foo", "bar"]
+          body: ["foo", "bar"],
         }
       );
 
     const octokitOriginal = new Octokit({
       baseUrl: "https://original.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const options = {
@@ -46,14 +46,14 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
       owner: "octokit",
       repo: "rest.js",
       issue_number: 1,
-      labels: ["foo", "bar"]
+      labels: ["foo", "bar"],
     };
 
     return Promise.all([
       // @ts-ignore no idea why TypeScript is complaining about "POST" not being compatible with RequestMethod, which is an enum including "POST"
       octokitOriginal.request(options),
       // @ts-ignore
-      octokitPatched.request(options)
+      octokitPatched.request(options),
     ]);
   });
 
@@ -66,8 +66,8 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
           body: {
-            labels: ["foo", "bar"]
-          }
+            labels: ["foo", "bar"],
+          },
         }
       )
       .put(
@@ -75,21 +75,21 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
         {},
         {
           // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
-          body: ["foo", "bar"]
+          body: ["foo", "bar"],
         }
       );
 
     const octokitOriginal = new Octokit({
       baseUrl: "https://original.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const options = {
@@ -98,14 +98,14 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
       owner: "octokit",
       repo: "rest.js",
       issue_number: 1,
-      labels: ["foo", "bar"]
+      labels: ["foo", "bar"],
     };
 
     return Promise.all([
       // @ts-ignore no idea why TypeScript is complaining about "POST" not being compatible with RequestMethod, which is an enum including "POST"
       octokitOriginal.request(options),
       // @ts-ignore
-      octokitPatched.request(options)
+      octokitPatched.request(options),
     ]);
   });
 });
@@ -115,14 +115,14 @@ describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
     const mock = fetchMock
       .sandbox()
       .get("https://patched.test/repos/octokit/rest.js/issues/1/labels", {
-        ok: true
+        ok: true,
       });
 
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const { data } = await octokitPatched.request(
@@ -130,7 +130,7 @@ describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
       {
         owner: "octokit",
         repo: "rest.js",
-        issue_number: 1
+        issue_number: 1,
       }
     );
     expect(data).toStrictEqual({ ok: true });
@@ -145,22 +145,22 @@ describe("POST /repos/:owner/:repo/labels", () => {
         // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
         body: {
           name: "foo",
-          color: "BADA55"
-        }
+          color: "BADA55",
+        },
       });
 
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     return octokitPatched.request("POST /repos/:owner/:repo/labels", {
       owner: "octokit",
       repo: "rest.js",
       name: "foo",
-      color: "BADA55"
+      color: "BADA55",
     });
   });
 });
@@ -177,8 +177,8 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const { data } = await octokitPatched.request(
@@ -186,7 +186,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
       {
         owner: "octocat",
         repo: "hello-world",
-        ref: "feature/123"
+        ref: "feature/123",
       }
     );
     expect(data).toStrictEqual({ ok: true });
@@ -203,15 +203,15 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     try {
       await octokitPatched.request("GET /repos/:owner/:repo/git/ref/:ref", {
         owner: "octocat",
         repo: "hello-world",
-        ref: "feature/123"
+        ref: "feature/123",
       });
       throw new Error("Request should not resolve");
     } catch (error) {
@@ -230,15 +230,15 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     try {
       await octokitPatched.request("GET /repos/:owner/:repo/git/ref/:ref", {
         owner: "octocat",
         repo: "hello-world",
-        ref: "feature/123"
+        ref: "feature/123",
       });
       throw new Error("Request should not resolve");
     } catch (error) {
@@ -257,8 +257,8 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const { data } = await octokitPatched.request(
@@ -266,7 +266,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
       {
         owner: "octocat",
         repo: "hello-world",
-        ref: "feature/123"
+        ref: "feature/123",
       }
     );
     expect(data).toStrictEqual([{ ok: true }]);
@@ -283,8 +283,8 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const { data } = await octokitPatched.request(
@@ -292,7 +292,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
       {
         owner: "octocat",
         repo: "hello-world",
-        ref: "feature/123"
+        ref: "feature/123",
       }
     );
     expect(data).toStrictEqual([1, 2]);
@@ -309,8 +309,8 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     const { data } = await octokitPatched.request(
@@ -318,7 +318,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
       {
         owner: "octocat",
         repo: "hello-world",
-        ref: "feature/123"
+        ref: "feature/123",
       }
     );
     expect(data).toStrictEqual([]);
@@ -335,8 +335,8 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock
-      }
+        fetch: mock,
+      },
     });
 
     try {
@@ -345,7 +345,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
         {
           owner: "octocat",
           repo: "hello-world",
-          ref: "feature/123"
+          ref: "feature/123",
         }
       );
       throw new Error("Request should not resolve");
