@@ -4,7 +4,7 @@
 
 [![@latest](https://img.shields.io/npm/v/@octokit/plugin-enterprise-compatibility.svg)](https://www.npmjs.com/package/@octokit/plugin-enterprise-compatibility)
 [![Build Status](https://github.com/octokit/plugin-enterprise-compatibility.js/workflows/Test/badge.svg)](https://github.com/octokit/plugin-enterprise-compatibility.js/actions?workflow=Test)
-[![Greenkeeper badge](https://badges.greenkeeper.io/octokit/plugin-enterprise-compatibility.js.svg)](https://greenkeeper.io/)
+
 
 The GitHub API teams is continuously improving existing APIs to make the overall platform more consistent. For example, the [Add labels to an issue](https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue) expected the label names array to be sent directly in the request body root, as you can still see in the documentation for [GHE 2.15](https://developer.github.com/enterprise/2.15/v3/issues/labels/#input).
 
