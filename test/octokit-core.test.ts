@@ -355,7 +355,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
   });
 });
 
-describe("GET /orgs/:org/teams/:team_slug", () => {
+describe("GET /orgs/:org/teams/:team_slug*", () => {
   it("Throws no error for github.com users", async () => {
     const mock = fetchMock
       .sandbox()
@@ -381,7 +381,7 @@ describe("GET /orgs/:org/teams/:team_slug", () => {
     expect(data).toStrictEqual({ id: 123 });
   });
 
-  it("Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
+  it("'GET /orgs/:org/teams/:team_slug': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
     const mock = fetchMock
       .sandbox()
       .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
@@ -408,7 +408,46 @@ describe("GET /orgs/:org/teams/:team_slug", () => {
     } catch (error) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
-        `"GET /orgs/:org/teams/:team_slug" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request('GET /teams/:team_id, { team_id })`
+        `"GET /orgs/:org/teams/:team_slug" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/:team_id", { team_id })`
+      );
+    }
+  });
+
+  it("'GET /orgs/:org/teams/:team_slug/discussions/:discussion_number/comments': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
+    const mock = fetchMock
+      .sandbox()
+      .getOnce(
+        "https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team/discussions/123/comments",
+        {
+          status: 404,
+          body: { error: "Not found" },
+          headers: {
+            "X-GitHub-Enterprise-Version": "2.20.0",
+          },
+        }
+      );
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://ghes.acme-inc.test/api/v3",
+      request: {
+        fetch: mock,
+      },
+    });
+
+    try {
+      await octokitPatched.request(
+        "GET /orgs/:org/teams/:team_slug/discussions/:discussion_number/comments",
+        {
+          org: "my-org",
+          team_slug: "my-team",
+          discussion_number: 123,
+        }
+      );
+      throw new Error("Should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(404);
+      expect(error.message).toEqual(
+        `"GET /orgs/:org/teams/:team_slug/discussions/:discussion_number/comments" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/:team_id/discussions/:discussion_number/comments", { team_id })`
       );
     }
   });
