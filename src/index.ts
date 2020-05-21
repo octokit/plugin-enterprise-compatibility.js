@@ -71,6 +71,36 @@ export function enterpriseCompatibility(octokit: Octokit) {
           });
       }
 
+      // TODO: implement fix for #62 here
+
+      // https://github.com/octokit/plugin-enterprise-compatibility.js/issues/60
+      if (/\/orgs\/[^/]+\/teams/.test(options.url)) {
+        try {
+          return await request(options);
+        } catch (error) {
+          if (error.status !== 404) {
+            throw error;
+          }
+
+          if (!error.headers || !error.headers["x-github-enterprise-version"]) {
+            throw error;
+          }
+
+          const deprecatedUrl = options.url.replace(
+            /\/orgs\/[^/]+\/teams\/[^/]+/,
+            "/teams/:team_id"
+          );
+
+          throw new RequestError(
+            `"${options.method} ${options.url}" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("${options.method} ${deprecatedUrl}", { team_id })`,
+            404,
+            {
+              request: options,
+            }
+          );
+        }
+      }
+
       return request(options);
     }
   );
