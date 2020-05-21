@@ -354,3 +354,62 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     }
   });
 });
+
+describe("GET /orgs/:org/teams/:team_slug", () => {
+  it("Throws no error for github.com users", async () => {
+    const mock = fetchMock
+      .sandbox()
+      .getOnce("https://api.github.com/orgs/my-org/teams/my-team", {
+        status: 200,
+        body: { id: 123 },
+      });
+
+    const octokitPatched = new OctokitWithPlugin({
+      request: {
+        fetch: mock,
+      },
+    });
+
+    const { data } = await octokitPatched.request(
+      "GET /orgs/:org/teams/:team_slug",
+      {
+        org: "my-org",
+        team_slug: "my-team",
+      }
+    );
+
+    expect(data).toStrictEqual({ id: 123 });
+  });
+
+  it("Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
+    const mock = fetchMock
+      .sandbox()
+      .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
+        status: 404,
+        body: { error: "Not found" },
+        headers: {
+          "X-GitHub-Enterprise-Version": "2.20.0",
+        },
+      });
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://ghes.acme-inc.test/api/v3",
+      request: {
+        fetch: mock,
+      },
+    });
+
+    try {
+      await octokitPatched.request("GET /orgs/:org/teams/:team_slug", {
+        org: "my-org",
+        team_slug: "my-team",
+      });
+      throw new Error("Should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(404);
+      expect(error.message).toEqual(
+        `"GET /orgs/:org/teams/:team_slug" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request('GET /teams/:team_id, { team_id })`
+      );
+    }
+  });
+});
