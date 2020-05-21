@@ -381,6 +381,31 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     expect(data).toStrictEqual({ id: 123 });
   });
 
+  it("Throws no error for github.com users", async () => {
+    const mock = fetchMock
+      .sandbox()
+      .getOnce("https://api.github.com/orgs/my-org/teams/my-team", {
+        status: 404,
+        body: { error: "not found" },
+      });
+
+    const octokitPatched = new OctokitWithPlugin({
+      request: {
+        fetch: mock,
+      },
+    });
+
+    try {
+      await octokitPatched.request("GET /orgs/:org/teams/:team_slug", {
+        org: "my-org",
+        team_slug: "my-team",
+      });
+      throw new Error("should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(404);
+    }
+  });
+
   it("'GET /orgs/:org/teams/:team_slug': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
     const mock = fetchMock
       .sandbox()
@@ -410,6 +435,31 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
       expect(error.message).toEqual(
         `"GET /orgs/:org/teams/:team_slug" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/:team_id", { team_id })`
       );
+    }
+  });
+
+  it("'GET /orgs/:org/teams/:team_slug': 500 error", async () => {
+    const mock = fetchMock
+      .sandbox()
+      .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
+        status: 500,
+      });
+
+    const octokitPatched = new OctokitWithPlugin({
+      baseUrl: "https://ghes.acme-inc.test/api/v3",
+      request: {
+        fetch: mock,
+      },
+    });
+
+    try {
+      await octokitPatched.request("GET /orgs/:org/teams/:team_slug", {
+        org: "my-org",
+        team_slug: "my-team",
+      });
+      throw new Error("Should not resolve");
+    } catch (error) {
+      expect(error.status).toEqual(500);
     }
   });
 
