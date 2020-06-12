@@ -57,7 +57,7 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
     ]);
   });
 
-  it("octokit.issues.replaceAllLabels() sends labels in request body", () => {
+  it("octokit.issues.setLabels() sends labels in request body", () => {
     const mock = fetchMock
       .sandbox()
       .put(
