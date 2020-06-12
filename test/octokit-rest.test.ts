@@ -14,7 +14,7 @@ describe("side effects", () => {
   });
 });
 
-describe("octokit.issues.addLabels() & octokit.issues.replaceAllLabels()", () => {
+describe("octokit.issues.addLabels() & octokit.issues.setLabels()", () => {
   it("octokit.issues.addLabels() sends labels in request body", () => {
     const mock = fetchMock
       .sandbox()
@@ -63,7 +63,7 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceAllLabels()", () =>
     ]);
   });
 
-  it("octokit.issues.replaceAllLabels() sends labels in request body", () => {
+  it("octokit.issues.setLabels() sends labels in request body", () => {
     const mock = fetchMock
       .sandbox()
       .put(
@@ -106,8 +106,8 @@ describe("octokit.issues.addLabels() & octokit.issues.replaceAllLabels()", () =>
     };
 
     return Promise.all([
-      octokitOriginal.issues.replaceAllLabels(options),
-      octokitPatched.issues.replaceAllLabels(options),
+      octokitOriginal.issues.setLabels(options),
+      octokitPatched.issues.setLabels(options),
     ]);
   });
 });
