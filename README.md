@@ -52,7 +52,7 @@ const octokit = new MyOctokit({
   auth: "token123",
 });
 
-octokit.request("POST /repos/:owner/:repo/issues/:issue_number/labels", {
+octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels", {
   owner,
   repo,
   number,

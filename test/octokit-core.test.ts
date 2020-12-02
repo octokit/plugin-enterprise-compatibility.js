@@ -4,7 +4,7 @@ import { Octokit } from "@octokit/core";
 import { enterpriseCompatibility } from "../src";
 const OctokitWithPlugin = Octokit.plugin(enterpriseCompatibility);
 
-describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
+describe("{POST|PUT} /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
   it("POST sends labels in request body", () => {
     const mock = fetchMock
       .sandbox()
@@ -42,7 +42,7 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
 
     const options = {
       method: "POST",
-      url: "/repos/:owner/:repo/issues/:issue_number/labels",
+      url: "/repos/{owner}/{repo}/issues/{issue_number}/labels",
       owner: "octokit",
       repo: "rest.js",
       issue_number: 1,
@@ -94,7 +94,7 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
 
     const options = {
       method: "PUT",
-      url: "/repos/:owner/:repo/issues/:issue_number/labels",
+      url: "/repos/{owner}/{repo}/issues/{issue_number}/labels",
       owner: "octokit",
       repo: "rest.js",
       issue_number: 1,
@@ -110,13 +110,15 @@ describe("{POST|PUT} /repos/:owner/:repo/issues/:issue_number/labels", () => {
   });
 });
 
-describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
+describe("GET /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
   it("has no effect on GET methods", async () => {
     const mock = fetchMock
       .sandbox()
-      .get("https://patched.test/repos/octokit/rest.js/issues/1/labels", {
-        ok: true,
-      });
+      .get("https://patched.test/repos/octokit/rest.js/issues/1/labels", [
+        {
+          id: 1,
+        },
+      ]);
 
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
@@ -126,19 +128,19 @@ describe("GET /repos/:owner/:repo/issues/:issue_number/labels", () => {
     });
 
     const { data } = await octokitPatched.request(
-      "GET /repos/:owner/:repo/issues/:issue_number/labels",
+      "GET /repos/{owner}/{repo}/issues/{issue_number}/labels",
       {
         owner: "octokit",
         repo: "rest.js",
         issue_number: 1,
       }
     );
-    expect(data).toStrictEqual({ ok: true });
+    expect(data[0].id).toEqual(1);
   });
 });
 
-describe("POST /repos/:owner/:repo/labels", () => {
-  it("has no effoct on paths other than /repos/:owner/:repo/issues/:issue_number/labels", () => {
+describe("POST /repos/{owner}/{repo}/labels", () => {
+  it("has no effoct on paths other than /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
     const mock = fetchMock
       .sandbox()
       .post("https://patched.test/repos/octokit/rest.js/labels", 200, {
@@ -156,7 +158,7 @@ describe("POST /repos/:owner/:repo/labels", () => {
       },
     });
 
-    return octokitPatched.request("POST /repos/:owner/:repo/labels", {
+    return octokitPatched.request("POST /repos/{owner}/{repo}/labels", {
       owner: "octokit",
       repo: "rest.js",
       name: "foo",
@@ -165,13 +167,13 @@ describe("POST /repos/:owner/:repo/labels", () => {
   });
 });
 
-describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
-  it('"GET /repos/:owner/:repo/git/ref/:ref" with single object response"', async () => {
+describe("GET /repos/{owner}/{repo}/git/refs/{ref} (#21)", () => {
+  it('"GET /repos/{owner}/{repo}/git/ref/{ref}" with single object response"', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
-        { ok: true }
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
+        { node_id: "123" }
       );
 
     const octokitPatched = new OctokitWithPlugin({
@@ -182,21 +184,21 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     });
 
     const { data } = await octokitPatched.request(
-      "GET /repos/:owner/:repo/git/ref/:ref",
+      "GET /repos/{owner}/{repo}/git/ref/{ref}",
       {
         owner: "octocat",
         repo: "hello-world",
         ref: "feature/123",
       }
     );
-    expect(data).toStrictEqual({ ok: true });
+    expect(data.node_id).toStrictEqual("123");
   });
 
-  it('"GET /repos/:owner/:repo/git/ref/:ref" with array response', async () => {
+  it('"GET /repos/{owner}/{repo}/git/ref/{ref}" with array response', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
         [1, 2]
       );
 
@@ -208,7 +210,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     });
 
     try {
-      await octokitPatched.request("GET /repos/:owner/:repo/git/ref/:ref", {
+      await octokitPatched.request("GET /repos/{owner}/{repo}/git/ref/{ref}", {
         owner: "octocat",
         repo: "hello-world",
         ref: "feature/123",
@@ -219,11 +221,11 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     }
   });
 
-  it('"GET /repos/:owner/:repo/git/ref/:ref" with 404 response', async () => {
+  it('"GET /repos/{owner}/{repo}/git/ref/{ref}" with 404 response', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
         404
       );
 
@@ -235,7 +237,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     });
 
     try {
-      await octokitPatched.request("GET /repos/:owner/:repo/git/ref/:ref", {
+      await octokitPatched.request("GET /repos/{owner}/{repo}/git/ref/{ref}", {
         owner: "octocat",
         repo: "hello-world",
         ref: "feature/123",
@@ -246,12 +248,12 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     }
   });
 
-  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with single object response"', async () => {
+  it('"GET /repos/{owner}/{repo}/git/matching-refs/{ref}" with single object response"', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
-        { ok: true }
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
+        [{ node_id: "123" }]
       );
 
     const octokitPatched = new OctokitWithPlugin({
@@ -262,22 +264,22 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     });
 
     const { data } = await octokitPatched.request(
-      "GET /repos/:owner/:repo/git/matching-refs/:ref",
+      "GET /repos/{owner}/{repo}/git/matching-refs/{ref}",
       {
         owner: "octocat",
         repo: "hello-world",
         ref: "feature/123",
       }
     );
-    expect(data).toStrictEqual([{ ok: true }]);
+    expect(data[0].node_id).toEqual("123");
   });
 
-  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with array response"', async () => {
+  it('"GET /repos/{owner}/{repo}/git/matching-refs/{ref}" with array response"', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
-        [1, 2]
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
+        [{ node_id: "1" }, { node_id: "2" }]
       );
 
     const octokitPatched = new OctokitWithPlugin({
@@ -288,21 +290,21 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     });
 
     const { data } = await octokitPatched.request(
-      "GET /repos/:owner/:repo/git/matching-refs/:ref",
+      "GET /repos/{owner}/{repo}/git/matching-refs/{ref}",
       {
         owner: "octocat",
         repo: "hello-world",
         ref: "feature/123",
       }
     );
-    expect(data).toStrictEqual([1, 2]);
+    expect(data.map((ref) => ref.node_id)).toStrictEqual(["1", "2"]);
   });
 
-  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with 404 response"', async () => {
+  it('"GET /repos/{owner}/{repo}/git/matching-refs/{ref}" with 404 response"', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
         404
       );
 
@@ -314,7 +316,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     });
 
     const { data } = await octokitPatched.request(
-      "GET /repos/:owner/:repo/git/matching-refs/:ref",
+      "GET /repos/{owner}/{repo}/git/matching-refs/{ref}",
       {
         owner: "octocat",
         repo: "hello-world",
@@ -324,11 +326,11 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
     expect(data).toStrictEqual([]);
   });
 
-  it('"GET /repos/:owner/:repo/git/matching-refs/:ref" with 500 response"', async () => {
+  it('"GET /repos/{owner}/{repo}/git/matching-refs/{ref}" with 500 response"', async () => {
     const mock = fetchMock
       .sandbox()
       .get(
-        "https://patched.test/repos/octocat/hello-world/git/refs/feature/123",
+        "https://patched.test/repos/octocat/hello-world/git/refs/feature%2F123",
         500
       );
 
@@ -341,7 +343,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
 
     try {
       await octokitPatched.request(
-        "GET /repos/:owner/:repo/git/matching-refs/:ref",
+        "GET /repos/{owner}/{repo}/git/matching-refs/{ref}",
         {
           owner: "octocat",
           repo: "hello-world",
@@ -355,7 +357,7 @@ describe("GET /repos/:owner/:repo/git/refs/:ref (#21)", () => {
   });
 });
 
-describe("GET /orgs/:org/teams/:team_slug*", () => {
+describe("GET /orgs/{org}/teams/{team_slug}*", () => {
   it("Throws no error for github.com users", async () => {
     const mock = fetchMock
       .sandbox()
@@ -371,14 +373,14 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     });
 
     const { data } = await octokitPatched.request(
-      "GET /orgs/:org/teams/:team_slug",
+      "GET /orgs/{org}/teams/{team_slug}",
       {
         org: "my-org",
         team_slug: "my-team",
       }
     );
 
-    expect(data).toStrictEqual({ id: 123 });
+    expect(data.id).toStrictEqual(123);
   });
 
   it("Throws no error for github.com users", async () => {
@@ -396,7 +398,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     });
 
     try {
-      await octokitPatched.request("GET /orgs/:org/teams/:team_slug", {
+      await octokitPatched.request("GET /orgs/{org}/teams/{team_slug}", {
         org: "my-org",
         team_slug: "my-team",
       });
@@ -406,7 +408,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     }
   });
 
-  it("'GET /orgs/:org/teams/:team_slug': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
+  it("'GET /orgs/{org}/teams/{team_slug}': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
     const mock = fetchMock
       .sandbox()
       .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
@@ -425,7 +427,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     });
 
     try {
-      await octokitPatched.request("GET /orgs/:org/teams/:team_slug", {
+      await octokitPatched.request("GET /orgs/{org}/teams/{team_slug}", {
         org: "my-org",
         team_slug: "my-team",
       });
@@ -433,12 +435,12 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     } catch (error) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
-        `"GET /orgs/:org/teams/:team_slug" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/:team_id", { team_id })`
+        `"GET /orgs/{org}/teams/{team_slug}" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}", { team_id })`
       );
     }
   });
 
-  it("'GET /orgs/:org/teams/:team_slug': 500 error", async () => {
+  it("'GET /orgs/{org}/teams/{team_slug}': 500 error", async () => {
     const mock = fetchMock
       .sandbox()
       .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
@@ -453,7 +455,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     });
 
     try {
-      await octokitPatched.request("GET /orgs/:org/teams/:team_slug", {
+      await octokitPatched.request("GET /orgs/{org}/teams/{team_slug}", {
         org: "my-org",
         team_slug: "my-team",
       });
@@ -463,7 +465,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     }
   });
 
-  it("'GET /orgs/:org/teams/:team_slug/discussions/:discussion_number/comments': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
+  it("'GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
     const mock = fetchMock
       .sandbox()
       .getOnce(
@@ -486,7 +488,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
 
     try {
       await octokitPatched.request(
-        "GET /orgs/:org/teams/:team_slug/discussions/:discussion_number/comments",
+        "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments",
         {
           org: "my-org",
           team_slug: "my-team",
@@ -497,7 +499,7 @@ describe("GET /orgs/:org/teams/:team_slug*", () => {
     } catch (error) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
-        `"GET /orgs/:org/teams/:team_slug/discussions/:discussion_number/comments" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/:team_id/discussions/:discussion_number/comments", { team_id })`
+        `"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}/discussions/{discussion_number}/comments", { team_id })`
       );
     }
   });

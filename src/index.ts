@@ -88,7 +88,7 @@ export function enterpriseCompatibility(octokit: Octokit) {
 
           const deprecatedUrl = options.url.replace(
             /\/orgs\/[^/]+\/teams\/[^/]+/,
-            "/teams/:team_id"
+            "/teams/{team_id}"
           );
 
           throw new RequestError(
