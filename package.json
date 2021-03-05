@@ -13,7 +13,7 @@
     "pretest": "npm run -s lint",
     "test": "jest --coverage"
   },
-  "repository": "https://github.com/octokit/plugin-enterprise-compatibility.js.git",
+  "repository": "github:octokit/plugin-enterprise-compatibility.js",
   "keywords": [
     "octokit",
     "github",
