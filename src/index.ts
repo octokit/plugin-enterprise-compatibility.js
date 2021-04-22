@@ -8,19 +8,6 @@ import { isIssueLabelsUpdateOrReplace } from "./is-issue-labels-update-or-replac
 
 export function enterpriseCompatibility(octokit: Octokit) {
   octokit.hook.wrap("request", async (request, options) => {
-    // see https://github.com/octokit/rest.js/blob/15.x/lib/routes.json#L3046-L3068
-    if (isIssueLabelsUpdateOrReplace(options)) {
-      options.data = options.labels;
-      delete options.labels;
-
-      // for @octokit/rest v16.x, remove validation of labels option
-      /* istanbul ignore if */
-      if (options.request.validate) {
-        delete options.request.validate.labels;
-      }
-      return request(options);
-    }
-
     // TODO: implement fix for #62 here
 
     // https://github.com/octokit/plugin-enterprise-compatibility.js/issues/60
