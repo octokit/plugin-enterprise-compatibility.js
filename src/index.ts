@@ -19,7 +19,10 @@ export function enterpriseCompatibility(octokit: Octokit) {
           throw error;
         }
 
-        if (!error.headers || !error.headers["x-github-enterprise-version"]) {
+        if (
+          !error.response ||
+          !error.response.headers["x-github-enterprise-version"]
+        ) {
           throw error;
         }
 
