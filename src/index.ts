@@ -14,7 +14,7 @@ export function enterpriseCompatibility(octokit: Octokit) {
     if (/\/orgs\/[^/]+\/teams/.test(options.url)) {
       try {
         return await request(options);
-      } catch (error) {
+      } catch (error: any) {
         if (error.status !== 404) {
           throw error;
         }

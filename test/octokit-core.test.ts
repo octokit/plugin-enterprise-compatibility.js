@@ -107,7 +107,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
         team_slug: "my-team",
       });
       throw new Error("should not resolve");
-    } catch (error) {
+    } catch (error: any) {
       expect(error.status).toEqual(404);
     }
   });
@@ -136,7 +136,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
         team_slug: "my-team",
       });
       throw new Error("Should not resolve");
-    } catch (error) {
+    } catch (error: any) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
         `"GET /orgs/{org}/teams/{team_slug}" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}", { team_id })`
@@ -164,7 +164,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
         team_slug: "my-team",
       });
       throw new Error("Should not resolve");
-    } catch (error) {
+    } catch (error: any) {
       expect(error.status).toEqual(500);
     }
   });
@@ -200,7 +200,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
         }
       );
       throw new Error("Should not resolve");
-    } catch (error) {
+    } catch (error: any) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
         `"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}/discussions/{discussion_number}/comments", { team_id })`
