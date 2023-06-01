@@ -1,5 +1,5 @@
 // Import for types only, not a production dependency
-import { Octokit } from "@octokit/core";
+import type { Octokit } from "@octokit/core";
 import { RequestError } from "@octokit/request-error";
 
 import { VERSION } from "./version";
