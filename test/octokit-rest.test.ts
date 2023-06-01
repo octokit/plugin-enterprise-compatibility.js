@@ -1,5 +1,3 @@
-import fetchMock from "fetch-mock";
-
 const { Octokit } = require("@octokit/rest");
 
 import { enterpriseCompatibility } from "../src";
