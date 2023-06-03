@@ -1,10 +1,8 @@
 // Import for types only, not a production dependency
-import { Octokit } from "@octokit/core";
-import { EndpointOptions, OctokitResponse } from "@octokit/types";
+import type { Octokit } from "@octokit/core";
 import { RequestError } from "@octokit/request-error";
 
 import { VERSION } from "./version";
-import { isIssueLabelsUpdateOrReplace } from "./is-issue-labels-update-or-replace";
 
 export function enterpriseCompatibility(octokit: Octokit) {
   octokit.hook.wrap("request", async (request, options) => {
