@@ -1,4 +1,4 @@
-import { EndpointOptions } from "@octokit/types";
+import type { EndpointOptions } from "@octokit/types";
 
 export function isIssueLabelsUpdateOrReplace({ method, url }: EndpointOptions) {
   if (!["POST", "PUT"].includes(method)) {
