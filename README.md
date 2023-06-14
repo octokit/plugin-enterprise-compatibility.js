@@ -19,12 +19,12 @@ As a compromise, this plugin is reverting changes such as the one above to remai
 Browsers
 </th><td width=100%>
 
-Load `@octokit/plugin-enterprise-compatibility` and [`@octokit/core`](https://github.com/octokit/core.js) (or core-compatible module) directly from [cdn.skypack.dev](https://cdn.skypack.dev)
+Load `@octokit/plugin-enterprise-compatibility` and [`@octokit/core`](https://github.com/octokit/core.js) (or core-compatible module) directly from [esm.sh](https://esm.sh)
 
 ```html
 <script type="module">
-  import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
-  import { enterpriseCompatibility } from "https://cdn.skypack.dev/@octokit/plugin-enterprise-compatibility";
+  import { Octokit } from "https://esm.sh/@octokit/core";
+  import { enterpriseCompatibility } from "https://esm.sh/@octokit/plugin-enterprise-compatibility";
 </script>
 ```
 
