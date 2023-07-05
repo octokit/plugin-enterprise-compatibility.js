@@ -27,7 +27,7 @@ describe("GET /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
         owner: "octokit",
         repo: "rest.js",
         issue_number: 1,
-      }
+      },
     );
     expect(data[0].id).toEqual(1);
   });
@@ -81,7 +81,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
       {
         org: "my-org",
         team_slug: "my-team",
-      }
+      },
     );
 
     expect(data.id).toStrictEqual(123);
@@ -139,7 +139,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
     } catch (error: any) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
-        `"GET /orgs/{org}/teams/{team_slug}" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}", { team_id })`
+        `"GET /orgs/{org}/teams/{team_slug}" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}", { team_id })`,
       );
     }
   });
@@ -180,7 +180,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
           headers: {
             "X-GitHub-Enterprise-Version": "2.20.0",
           },
-        }
+        },
       );
 
     const octokitPatched = new OctokitWithPlugin({
@@ -197,13 +197,13 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
           org: "my-org",
           team_slug: "my-team",
           discussion_number: 123,
-        }
+        },
       );
       throw new Error("Should not resolve");
     } catch (error: any) {
       expect(error.status).toEqual(404);
       expect(error.message).toEqual(
-        `"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}/discussions/{discussion_number}/comments", { team_id })`
+        `"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments" is not supported in your GitHub Enterprise Server version. Please replace with octokit.request("GET /teams/{team_id}/discussions/{discussion_number}/comments", { team_id })`,
       );
     }
   });
