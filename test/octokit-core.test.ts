@@ -34,7 +34,7 @@ describe("GET /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
 });
 
 describe("POST /repos/{owner}/{repo}/labels", () => {
-  it("has no effoct on paths other than /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
+  it("has no effect on paths other than /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
     const mock = fetchMock
       .sandbox()
       .post("https://patched.test/repos/octokit/rest.js/labels", 200, {
