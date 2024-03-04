@@ -1,6 +1,6 @@
-const { Octokit } = require("@octokit/rest");
+import { Octokit } from "@octokit/rest";
 
-import { enterpriseCompatibility } from "../src";
+import { enterpriseCompatibility } from "../src/index.js";
 
 const MyOctokit = Octokit.plugin(enterpriseCompatibility);
 
