@@ -36,10 +36,8 @@ Node
 Install with `npm install @octokit/core @octokit/plugin-enterprise-compatibility`. Optionally replace `@octokit/core` with a core-compatible module
 
 ```js
-const { Octokit } = require("@octokit/core");
-const {
-  enterpriseCompatibility,
-} = require("@octokit/plugin-enterprise-compatibility");
+import { Octokit } from "@octokit/core";
+import { enterpriseCompatibility } from "@octokit/plugin-enterprise-compatibility";
 ```
 
 </td></tr>
