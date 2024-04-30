@@ -6,13 +6,14 @@
     "provenance": true
   },
   "description": "Octokit plugin for improving GHE compatibility",
+  "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs && tsc -p tsconfig.json",
     "generate-routes": "node scripts/generate-routes",
     "lint": "prettier --check 'src/*' 'test/*' README.md package.json scripts/build.mjs",
     "lint:fix": "prettier --write 'src/*' 'test/*' README.md package.json scripts/build.mjs",
     "pretest": "npm run -s lint",
-    "test": "jest --coverage"
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest --coverage"
   },
   "repository": "github:octokit/plugin-enterprise-compatibility.js",
   "keywords": [
@@ -26,13 +27,15 @@
   "author": "Gregor Martynus (https://github.com/gr2m)",
   "license": "MIT",
   "dependencies": {
-    "@octokit/request-error": "^5.0.0",
-    "@octokit/types": "^12.0.0"
+    "@octokit/request-error": "^6.1.1",
+    "@octokit/types": "^13.5.0"
   },
   "devDependencies": {
-    "@octokit/core": "^5.0.0",
-    "@octokit/rest": "^20.0.0",
-    "@octokit/tsconfig": "^2.0.0",
+    "@octokit/core": "^6.0.1",
+    "@octokit/plugin-paginate-rest": "^11.3.0",
+    "@octokit/plugin-request-log": "^5.1.1",
+    "@octokit/plugin-rest-endpoint-methods": "^13.2.1",
+    "@octokit/tsconfig": "^3.0.0",
     "@types/fetch-mock": "^7.3.1",
     "@types/jest": "^29.0.0",
     "@types/node": "^20.0.0",
@@ -41,18 +44,20 @@
     "glob": "^10.2.6",
     "jest": "^29.0.0",
     "prettier": "3.2.5",
-    "semantic-release": "^23.0.0",
     "semantic-release-plugin-update-version-in-files": "^1.0.0",
     "ts-jest": "^29.0.0",
     "typescript": "^5.0.0"
   },
   "jest": {
-    "preset": "ts-jest",
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "transform": {
       "^.+\\.(ts|tsx)$": [
         "ts-jest",
         {
-          "tsconfig": "test/tsconfig.test.json"
+          "tsconfig": "test/tsconfig.test.json",
+          "useESM": true
         }
       ]
     },
@@ -63,6 +68,9 @@
         "functions": 100,
         "lines": 100
       }
+    },
+    "moduleNameMapper": {
+      "^(.+)\\.jsx?$": "$1"
     }
   },
   "release": {

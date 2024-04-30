@@ -2,7 +2,7 @@
 import type { Octokit } from "@octokit/core";
 import { RequestError } from "@octokit/request-error";
 
-import { VERSION } from "./version";
+import { VERSION } from "./version.js";
 
 export function enterpriseCompatibility(octokit: Octokit) {
   octokit.hook.wrap("request", async (request, options) => {
