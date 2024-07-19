@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { Octokit as OctokitCore } from "@octokit/core";
 import { requestLog } from "@octokit/plugin-request-log";
 import { legacyRestEndpointMethods } from "@octokit/plugin-rest-endpoint-methods";
