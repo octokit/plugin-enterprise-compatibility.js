@@ -8,7 +8,7 @@ const OctokitWithPlugin = Octokit.plugin(enterpriseCompatibility);
 describe("GET /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
   it("has no effect on GET methods", async () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .get("https://patched.test/repos/octokit/rest.js/issues/1/labels", [
         {
           id: 1,
@@ -18,7 +18,7 @@ describe("GET /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -37,7 +37,7 @@ describe("GET /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
 describe("POST /repos/{owner}/{repo}/labels", () => {
   it("has no effect on paths other than /repos/{owner}/{repo}/issues/{issue_number}/labels", () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .post("https://patched.test/repos/octokit/rest.js/labels", 200, {
         // @ts-ignore definitions missing, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40133
         body: {
@@ -49,7 +49,7 @@ describe("POST /repos/{owner}/{repo}/labels", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://patched.test",
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -65,7 +65,7 @@ describe("POST /repos/{owner}/{repo}/labels", () => {
 describe("GET /orgs/{org}/teams/{team_slug}*", () => {
   it("Throws no error for github.com users", async () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .getOnce("https://api.github.com/orgs/my-org/teams/my-team", {
         status: 200,
         body: { id: 123 },
@@ -73,7 +73,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
 
     const octokitPatched = new OctokitWithPlugin({
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -90,7 +90,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
 
   it("Throws no error for github.com users", async () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .getOnce("https://api.github.com/orgs/my-org/teams/my-team", {
         status: 404,
         body: { error: "not found" },
@@ -98,7 +98,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
 
     const octokitPatched = new OctokitWithPlugin({
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -115,7 +115,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
 
   it("'GET /orgs/{org}/teams/{team_slug}': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
         status: 404,
         body: { error: "Not found" },
@@ -127,7 +127,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://ghes.acme-inc.test/api/v3",
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -147,7 +147,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
 
   it("'GET /orgs/{org}/teams/{team_slug}': 500 error", async () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .getOnce("https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team", {
         status: 500,
       });
@@ -155,7 +155,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://ghes.acme-inc.test/api/v3",
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -172,7 +172,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
 
   it("'GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments': Throws a helpful error for GitHub Enterprise Server 2.20 users", async () => {
     const mock = fetchMock
-      .sandbox()
+      .createInstance()
       .getOnce(
         "https://ghes.acme-inc.test/api/v3/orgs/my-org/teams/my-team/discussions/123/comments",
         {
@@ -187,7 +187,7 @@ describe("GET /orgs/{org}/teams/{team_slug}*", () => {
     const octokitPatched = new OctokitWithPlugin({
       baseUrl: "https://ghes.acme-inc.test/api/v3",
       request: {
-        fetch: mock,
+        fetch: mock.fetchHandler,
       },
     });
 
